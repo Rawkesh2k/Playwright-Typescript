@@ -1,3 +1,6 @@
+
+src/app/pages/maps/maps.module.ts
+src/index.html
 # compiled output
 /dist
 /tmp
