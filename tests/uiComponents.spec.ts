@@ -74,7 +74,15 @@ test.describe("Form Layouts Page", () => {
       await optionsList.filter({ hasText: color }).click();
       await expect(header).toHaveCSS("background-color", colors[color]);
       await dropdownMenu.click();
-      await page.waitForTimeout(1500)
+      await page.waitForTimeout(1500);
     }
+  });
+
+  test("Handling tooltips", async ({ page }) => {
+    await page.getByText("Modal & Overlays").click();
+    await page.getByText("Tooltip").click();
+    await page.getByText("Tooltip").click();
+    const tooltipcard = page.locator('nb-card',{hasText:'Tooltip Placements'})
+    await page.locator('//button[normalize-space()="Top"]').hover()
   });
 });
