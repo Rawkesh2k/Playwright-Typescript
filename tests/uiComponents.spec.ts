@@ -135,13 +135,51 @@ test.describe("Form Layouts Page", () => {
         const cellValue = await row.locator("td").last().textContent();
         expect(cellValue).toEqual(age);
         if (age == "200") {
-          expect(await page.getByRole('cell', { name: 'No data found' }).textContent()).toContain(
-            "No data found"
-          );
+          expect(
+            await page
+              .getByRole("cell", { name: "No data found" })
+              .textContent()
+          ).toContain("No data found");
         } else {
           expect(cellValue).toEqual(age);
         }
       }
     }
+  });
+
+  test("sliders", async ({ page }) => {
+    await page.waitForTimeout(1000);
+    await page.locator('//a[@title="IoT Dashboard"]').click();
+    await page.waitForTimeout(1000);
+    //Update Slider Attribute
+    // const tempGauge = page.locator(
+    //   '[tabtitle="Temperature"] ngx-temperature-dragger circle'
+    // );
+    // await tempGauge.evaluate((node) => {
+    //   node.setAttribute("cx", "232.630");
+    //   node.setAttribute("cy", "232.630");
+    // });
+    // await page.waitForTimeout(1000);
+    // await tempGauge.click();
+    // await page.waitForTimeout(1000);
+
+    //Real Time mouse movement
+    const tempBox = page.locator(
+      '[tabtitle="Temperature"] ngx-temperature-dragger circle'
+    );
+    await tempBox.scrollIntoViewIfNeeded()
+    const box = await tempBox.boundingBox()
+    const x = box.x + box.width/2
+    const y = box.y + box.height/2
+    await page.mouse.move(x,y)
+    await page.waitForTimeout(1000);
+    await page.mouse.down()
+    await page.waitForTimeout(1000);
+    await page.mouse.move(x+100,y)
+    await page.waitForTimeout(1000);
+    await page.mouse.move(x+100, y+100)
+    await page.waitForTimeout(1000);
+    await page.mouse.up()
+    await page.waitForTimeout(1000);
   });
 });
