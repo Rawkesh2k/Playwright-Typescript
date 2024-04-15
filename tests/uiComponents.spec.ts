@@ -91,18 +91,35 @@ test.describe("Form Layouts Page", () => {
   test("Dialog box", async ({ page }) => {
     await page.getByText("Tables & Data").click();
     await page.getByText("Smart Table").click();
-    await page.waitForTimeout(1000)
-    page.on("dialog", dialog=>{
-      expect(dialog.message()).toEqual('Are you sure you want to delete?')
-      dialog.accept()
+    await page.waitForTimeout(1000);
+    page.on("dialog", (dialog) => {
+      expect(dialog.message()).toEqual("Are you sure you want to delete?");
+      dialog.accept();
     });
     await page
       .getByRole("table")
       .locator("tr", { hasText: "mdo@gmail.com" })
       .locator(".nb-trash")
       .click();
-      await page.waitForTimeout(1000)
-   
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(1000);
+
+    await page.waitForTimeout(1000);
+  });
+
+  test("Web Tables", async ({ page }) => {
+    await page.getByText("Tables & Data").click();
+    await page.getByText("Smart Table").click();
+    await page.waitForTimeout(1000);
+    const targetRole = page.getByRole("row", { name: "twitter@outlook.com" });
+    await page.waitForTimeout(1000);
+    await targetRole.locator(".nb-edit").click();
+    //await targetRole.locator(".nb-edit").click();
+    await page.waitForTimeout(1000);
+    await page.locator('input-editor').getByPlaceholder('Age').clear()
+    await page.waitForTimeout(1000);
+    await page.locator('input-editor').getByPlaceholder('Age').fill('26')
+    await page.waitForTimeout(1000);
+    await page.locator('.nb-checkmark').click()
+    //await page.locator('.nb-checkmark').click()
   });
 });
