@@ -115,11 +115,33 @@ test.describe("Form Layouts Page", () => {
     await targetRole.locator(".nb-edit").click();
     //await targetRole.locator(".nb-edit").click();
     await page.waitForTimeout(1000);
-    await page.locator('input-editor').getByPlaceholder('Age').clear()
+    await page.locator("input-editor").getByPlaceholder("Age").clear();
     await page.waitForTimeout(1000);
-    await page.locator('input-editor').getByPlaceholder('Age').fill('26')
+    await page.locator("input-editor").getByPlaceholder("Age").fill("26");
     await page.waitForTimeout(1000);
-    await page.locator('.nb-checkmark').click()
+    await page.locator(".nb-checkmark").click();
     //await page.locator('.nb-checkmark').click()
+
+    //test filtering of the table values
+
+    const ages = ["20", "30", "40", "200"];
+    for (let age of ages) {
+      await page.locator("input-filter").getByPlaceholder("Age").clear();
+      await page.waitForTimeout(1000);
+      await page.locator("input-filter").getByPlaceholder("Age").fill(age);
+      await page.waitForTimeout(1000);
+      const rows = page.locator("tbody tr");
+      for (let row of await rows.all()) {
+        const cellValue = await row.locator("td").last().textContent();
+        expect(cellValue).toEqual(age);
+        if (age == "200") {
+          expect(await page.getByRole('cell', { name: 'No data found' }).textContent()).toContain(
+            "No data found"
+          );
+        } else {
+          expect(cellValue).toEqual(age);
+        }
+      }
+    }
   });
 });
