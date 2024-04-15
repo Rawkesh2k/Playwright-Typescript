@@ -82,7 +82,27 @@ test.describe("Form Layouts Page", () => {
     await page.getByText("Modal & Overlays").click();
     await page.getByText("Tooltip").click();
     await page.getByText("Tooltip").click();
-    const tooltipcard = page.locator('nb-card',{hasText:'Tooltip Placements'})
-    await page.locator('//button[normalize-space()="Top"]').hover()
+    const tooltipcard = page.locator("nb-card", {
+      hasText: "Tooltip Placements",
+    });
+    await page.locator('//button[normalize-space()="Top"]').hover();
+  });
+
+  test("Dialog box", async ({ page }) => {
+    await page.getByText("Tables & Data").click();
+    await page.getByText("Smart Table").click();
+    await page.waitForTimeout(1000)
+    page.on("dialog", dialog=>{
+      expect(dialog.message()).toEqual('Are you sure you want to delete?')
+      dialog.accept()
+    });
+    await page
+      .getByRole("table")
+      .locator("tr", { hasText: "mdo@gmail.com" })
+      .locator(".nb-trash")
+      .click();
+      await page.waitForTimeout(1000)
+   
+    await page.waitForTimeout(1000)
   });
 });
