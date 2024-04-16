@@ -1,14 +1,15 @@
-import {Page} from "@playwright/test"
+import { Locator, Page } from "@playwright/test";
 
-export class NavigationPage{
+export class NavigationPage {
+  readonly page: Page;
+  readonly formLayoutMenuItem: Locator;
+  constructor(page: Page) {
+    this.page = page;
+    this.formLayoutMenuItem = page.getByText("Form Layouts")
+  }
 
-    readonly page: Page
-    constructor(page: Page){
-        this.page=page
-    }
-
-    async formlayouts(){
-        await this.page.$('//a[@title="Forms"]').click();
-        await this.page.getByText("Form Layouts").click();
-    }
+  async formlayouts() {
+    await this.page.getByText("Forms").click();
+    await this.formLayoutMenuItem.click();
+  }
 }
