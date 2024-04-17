@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { faker } from "@faker-js/faker";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
@@ -11,19 +12,24 @@ test.describe("Form Layouts Page", () => {
   });
   test("Input Fields", async ({ page }) => {
     const usingGridEmailInput = page.locator("#inputEmail1");
-
-    await page.waitForTimeout(2000);
+    const randomEmail = faker.internet.exampleEmail()
+    await page.waitForTimeout(1000);
     await usingGridEmailInput.fill("brotest@test.com");
-    await usingGridEmailInput.fill("brotest@test.com");
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
+    await usingGridEmailInput.fill(randomEmail);
+    await page.waitForTimeout(1000);
     await usingGridEmailInput.clear();
-    await page.waitForTimeout(2000);
-    await usingGridEmailInput.pressSequentially("test@test.com", {
-      delay: 500,
-    });
-    await usingGridEmailInput.pressSequentially("test@test.com", {
-      delay: 500,
-    });
+    await page.waitForTimeout(1000);
+    await usingGridEmailInput.fill("brotest@test.com");
+    await page.waitForTimeout(1000);
+    await usingGridEmailInput.fill(randomEmail);
+    await page.waitForTimeout(1000);
+    // await usingGridEmailInput.pressSequentially("test@test.com", {
+    //   delay: 500,
+    // });
+    // await usingGridEmailInput.pressSequentially("test@test.com", {
+    //   delay: 500,
+    // });
   });
 
   test("Handling Radio Buttons", async ({ page }) => {

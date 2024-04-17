@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { NavigationPage } from "../PageObjects/navigationPage";
-import { faker } from "@faker-js/faker";
+
 
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
