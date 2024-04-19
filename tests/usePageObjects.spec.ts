@@ -3,7 +3,7 @@ import { NavigationPage } from "../PageObjects/navigationPage";
 
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
+  await page.goto("/");
 });
 
 test("Navigate to the page", async ({ page }) => {
