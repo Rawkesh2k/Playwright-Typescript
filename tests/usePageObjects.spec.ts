@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test("Navigate to the page", async ({ page }) => {
+test("Navigate to the page @smoke", async ({ page }) => {
   const navigateTo = new NavigationPage(page);
   await navigateTo.formlayouts();
 });

@@ -21,4 +21,5 @@ test("Drag And Drop with iFrame", async ({ page, globalsqaURL }) => {
   await page.waitForTimeout(1000);
   await page.mouse.up();
   await page.waitForTimeout(3000);
+  
 });

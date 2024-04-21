@@ -15,7 +15,13 @@ export default defineConfig<TestOptions>({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "html",
+  reporter: /*,*/ [
+    ["html", { outputFile: "test-results/htmlReports.html" }],
+    ["json", { outputFile: "test-results/jsonReports.json" }],
+    ["junit", { outputFile: "test-results/junitReports.xml" }],
+    //["allure-playwright"],
+    ['html']
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -54,5 +60,18 @@ export default defineConfig<TestOptions>({
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
     },
+    {
+      name: "mobile",
+      testMatch: "testMobile.spec.ts",
+      use: {
+        ...devices["iPhone 14 Pro Max"],
+      },
+    },
   ],
+
+  webServer:{
+    command: 'npm run start',
+      url:'http://localhost:4200',
+    }
+  }
 });

@@ -7,8 +7,13 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test.describe.only("Form Layouts Page", () => {
-  test.describe.configure({ retries: 2 });
+test.describe.only("Form Layouts Page @block @regression", () => {
+  //-->custom tagname is @block here, can have multiple tags
+
+  //can run multiple tests with different tags at the same time usng a pipe separator as below:
+  // Eg: npx playwright test --project=chromium "@smoke|@regression|@block"
+  //test.describe.configure({ retries: 2 });
+  test.describe.configure({ retries: 0 });
   //test.describe.configure({mode: 'serial'})
   // When set to 'serial', it means that the test suites will be executed one after another, in a sequential manner.
   //This mode ensures that each test suite starts only after the previous one has completed,
@@ -18,7 +23,7 @@ test.describe.only("Form Layouts Page", () => {
     (await page.$('//a[@title="Forms"]')).click();
     await page.getByText("Form Layouts").click();
   });
-  test.only("Input Fields", async ({ page }) => {
+  test("Input Fields", async ({ page }) => {
     const usingGridEmailInput = page.locator("#inputEmail1");
     const randomEmail = faker.internet.exampleEmail();
     await page.waitForTimeout(1000);
@@ -46,7 +51,7 @@ test.describe.only("Form Layouts Page", () => {
     // });
   });
 
-  test("Handling Radio Buttons", async ({ page }) => {
+  test.only("Handling Radio Buttons", async ({ page }) => {
     const usingTheGrid = page.locator("nb-card", { hasText: "Using the Grid" });
     //await usingTheGrid.getByLabel("Option 1").check({ force: true });
     //await usingTheGrid.getByLabel("Option 1").check({ force: true });
@@ -58,12 +63,16 @@ test.describe.only("Form Layouts Page", () => {
     ).toBeChecked();
     await page.locator('//span[normalize-space()="Option 2"]').click();
     await page.locator('//span[normalize-space()="Option 2"]').click();
-    expect(
-      await usingTheGrid.getByRole("radio", { name: "Option 2" }).isChecked()
-    ).toBeTruthy();
-    expect(
-      await page.locator('//span[normalize-space()="Option 1"]').isChecked
-    ).toBeFalsy();
+    const radioStatus = await usingTheGrid
+      .getByRole("radio", { name: "Option 1" })
+      .isChecked();
+    await expect(usingTheGrid).toHaveScreenshot();
+    // expect(
+    //   await usingTheGrid.getByRole("radio", { name: "Option 2" }).isChecked()
+    // ).toBeTruthy();
+    // expect(
+    //   await page.locator('//span[normalize-space()="Option 1"]').isChecked
+    // ).toBeFalsy();
   });
 
   test("lists and dropdowns", async ({ page }) => {
